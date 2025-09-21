@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Birthday Greeting for Maryle</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #fff;
+      color: #333;
+      overflow-x: hidden;
+    }
+
+    /* Hero Section */
+    .hero {
+      position: relative;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: #fff;
+      overflow: hidden;
+    }
+
+    /* Blurred background */
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: url('images/download.jpg') no-repeat center center/cover;
+      filter: blur(2px) brightness(0.6);
+      z-index: 0;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 600px;
+      padding: 20px;
+      margin-top: -20%;
+    }
+
+    .hero h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      color:#e0e0e0;
+       text-shadow: 1px 1px 3px rgba(0,0,0,0.4); /* makes it readable over background */
+    }
+
+    .hero img {
+      width: 180px;
+      height: 180px;
+      object-fit: cover;
+      margin-bottom: 20px;
+      border: 4px solid white; /* inner outline */
+  box-shadow: 0 0 0 6px #c8a2c8; /* outer pastel outline */
+  border-radius: 12px;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+       text-shadow: 1px 1px 3px rgba(0,0,0,0.4); /* makes it readable over background */
+    }
+
+    .hero button {
+  background: linear-gradient(135deg, #c8a2c8, #f8a1d1);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: bold;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  transition: transform 0.2s ease;
+    }
+
+    .hero button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 15px rgba(255, 105, 180, 0.5);
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(6px);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background: #fff;
+      color: #333;
+      padding: 30px;
+      border-radius: 12px;
+      text-align: center;
+      max-width: 350px;
+      width: 80%;
+      position: relative;
+    }
+
+    .modal-content h2 {
+      margin-bottom: 15px;
+    }
+
+    .close {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #666;
+    }
+
+ /* Playlist Section */
+.playlist {
+  background: #ffffff;
+  padding: 40px 20px;
+  border-radius: 12px;
+  max-width: 600px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1); /* softer for light mode */
+}
+
+.playlist-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.playlist-header img {
+  border-radius: 8px;
+  width: 120px;
+  height: 120px;
+}
+
+.covering{
+    display: flex;
+    justify-content: center;
+    gap: 5%;
+}
+.playlist-header h2 {
+  color: var(--accent-2); /* keep your accent (lavender/pink) */
+  margin-bottom: 5px;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.playlist-header p {
+  color: #666; /* softer dark grey */
+}
+
+.song-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.song-list li {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.song-list li:hover {
+  background: rgba(200, 162, 200, 0.15); /* pastel lavender hover */
+}
+
+.song-list img {
+  border-radius: 6px;
+  width: 60px;
+  height: 60px;
+}
+
+.song-list h4 {
+  margin: 0;
+  font-size: 16px;
+  color: #222; /* dark text for readability */
+}
+
+.song-list p {
+  margin: 0;
+  font-size: 14px;
+  color: #777; /* lighter grey */
+}
+
+/* Music Player Modal */
+.player img {
+  width: 150px;
+  height: 150px;
+  border-radius: 12px;
+  margin-bottom: 15px;
+}
+
+.player h3 {
+  margin: 10px 0 5px;
+  color: var(--accent-2);
+}
+
+.player p {
+  margin: 0 0 10px;
+  color: #555;
+}
+
+.player audio {
+  width: 100%;
+  margin: 15px 0;
+}
+
+.player .msg {
+  margin-top: 10px;
+  color: var(--accent);
+  font-weight: bold;
+}
+.gtr{
+    text-align: left;
+}
+
+  </style>
+</head>
+<body>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Happy Birthday, Maryle!</h1>
+      <img src="images/back.jpg" alt="Maryle">
+      <p>Happy Birthday, Ms. Maryle! Wishing you a fun and amazing day!</p>
+      <button onclick="openGreeting()">Open Greeting</button>
+    </div>
+  </section>
+
+  <!-- Greeting Modal -->
+  <div class="modal" id="greetingModal">
+    <div class="modal-content">
+      <span class="close" onclick="closeGreeting()">&times;</span>
+      <h2>Birthday Greetings</h2>
+      <p class="gtr">Hi Ms. Maryle, <br><br>
+
+Happy Birthday! I hope your day is filled with happiness, laughter, and everything that makes you feel special. Birthdays only come once a year, so I wish this one brings you lots of good memories to look back on.
+<br><br>
+I know we don’t really know each other (yet), but I just want to be honest I’ve admired you from afar for quite a while now. There is really something in you that makes you standout. It might sound simple, but sometimes even small things like your smile or the way you present yourself can make someone’s day better. For me, that’s true.
+<br><br>
+I don’t want to make this sound too cheesy, so I’ll just leave it at that. I just thought your birthday was the best time to finally say it, even in a small way.
+<br><br>
+Wishing you an amazing year ahead more laughter, more wins, and more reasons to celebrate. Enjoy your special day, you deserve it! 
+<br><br>
+– Mark</p>
+    </div>
+  </div>
+
+  <!-- Playlist -->
+  <section class="playlist">
+    <div class="playlist-header">
+    <h2>The playlist that feels familiar.</h2>
+      <div class="covering">
+          <img src="songs/cover/cover.png" alt="Playlist Cover">
+        <p>A mix of songs that somehow remind me of you in the smallest ways.</p>
+      </div>
+    </div>
+
+    <ul class="song-list">
+      <li onclick="openPlayer('Cotton Candy', 'Arthur Nery', 'songs/audio/Arthur Nery - Cotton Candy (Official Audio).mp3', 'songs/cover/arthurnery1.jpg', 'This reminds me of the way you smile, sweet and delicate 😶')">
+        <img src="songs/cover/arthurnery1.jpg" alt="Song One">
+        <div>
+          <h4>Cotton Candy</h4>
+          <p>Arthur Nery</p>
+        </div>
+      </li>
+      <li onclick="openPlayer('Out Of My League', 'LANY', 'songs/audio/LANY - Out Of My League (Official Lyric Video).mp3', 'songs/cover/lany.jpg', 'The title speaks for itself 🤐')">
+        <img src="songs/cover/lany.jpg" alt="Song Two">
+        <div>
+          <h4>Out Of My League</h4>
+          <p>LANY</p>
+        </div>
+      </li>
+      <li onclick="openPlayer('Style', 'Taylor Swift', 'songs/audio/Taylor Swift - Style.mp3', 'songs/cover/taylor.jpg', 'For every outfit you wore that left me quiet and a bit stunned. 😶')">
+        <img src="songs/cover/taylor.jpg" alt="Song Three">
+        <div>
+          <h4>Style</h4>
+          <p>Taylor Swift</p>
+        </div>
+      </li>
+      <li onclick="openPlayer('Baliw', 'SUD', 'songs/audio/SUD - Baliw (Official Music Video).mp3', 'songs/cover/baliw.jpg', 'You are a psychology student right? andam mahimong pasyente -- ako ni ha 😔')">
+        <img src="songs/cover/baliw.jpg" alt="Song Three">
+        <div>
+          <h4>Baliw</h4>
+          <p>SUD</p>
+        </div>
+      </li>
+      <li onclick="openPlayer('Di Nakakasawa', 'Arthur Nery', 'songs/audio/Di Nakakasawa - Arthur Nery feat. Kiyo  II_ The Second Album (Official Audio).mp3', 'songs/cover/arthur.png', '0.49 sec is literaly you 😬')">
+        <img src="songs/cover/arthur.png" alt="Song Three">
+        <div>
+          <h4>Di Nakakasawa</h4>
+          <p>Arthur Nery</p>
+        </div>
+      </li>
+       <li onclick="openPlayer('Aphrodite', 'The Ridleys', 'songs/audio/Aphrodite.mp3', 'songs/cover/ridleys.png', 'A song for such goddess like beauty 😶‍🌫️')">
+        <img src="songs/cover/ridleys.png" alt="Song Three">
+        <div>
+          <h4>Aphrodite</h4>
+          <p>The Ridleys</p>
+        </div>
+      </li>
+      <li onclick="openPlayer('Hold Your Breath', 'Chase Atlantic', 'songs/audio/Hold Your Breath.mp3', 'songs/cover/chase.png', 'Aside from chase atlantic being my fave artist your style fits the beat of this one 😳')">
+        <img src="songs/cover/chase.png" alt="Song Three">
+        <div>
+          <h4>Hold Your Breath</h4>
+          <p>Chase Atlantic</p>
+        </div>
+      </li>
+         <li onclick="openPlayer('I Like U', 'NIKI', 'songs/audio/NIKI - I LIKE U (Official Music Video).mp3', 'songs/cover/NIKI.png', 'Ofcouse I gotta finish the list with this one right? 🫢')">
+        <img src="songs/cover/NIKI.png" alt="Song Three">
+        <div>
+          <h4>I Like U</h4>
+          <p>NIKI</p>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <!-- Music Player Modal -->
+  <div id="musicModal" class="modal">
+    <div class="modal-content player">
+      <span class="close" onclick="closePlayer()">&times;</span>
+      <img id="player-img" src="" alt="Album Art">
+      <h3 id="player-title"></h3>
+      <p id="player-artist"></p>
+      <audio id="audio-player" controls></audio>
+    </div>
+  </div>
+  <!-- claw -->
+  <script>
+    // Greeting Modal
+    function openGreeting() {
+      document.getElementById("greetingModal").style.display = "flex";
+    }
+    function closeGreeting() {
+      document.getElementById("greetingModal").style.display = "none";
+    }
+
+    function openPlayer(title, artist, src, img) {
+      document.getElementById("musicModal").style.display = "flex";
+      document.getElementById("player-title").textContent = title;
+      document.getElementById("player-artist").textContent = artist;
+      document.getElementById("player-img").src = img;
+
+      let audio = document.getElementById("audio-player");
+      audio.src = src;
+      audio.play();
+    }
+
+    function closePlayer() {
+      document.getElementById("musicModal").style.display = "none";
+      let audio = document.getElementById("audio-player");
+      audio.pause();
+      audio.currentTime = 0;
+    }
+  </script>
+</body>
+</html>

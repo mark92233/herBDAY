@@ -26,6 +26,40 @@
       overflow: hidden;
     }
 
+    
+    .hero-content {
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeUp 1s ease-out forwards;
+}
+
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.modal-content {
+  transform: scale(0.8);
+  opacity: 0;
+  animation: popIn 0.3s ease forwards;
+}
+
+@keyframes popIn {
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.hero img {
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
     /* Blurred background */
     .hero::before {
       content: "";

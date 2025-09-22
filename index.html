@@ -1,407 +1,489 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Birthday Greeting for Maryle</title>
   <style>
+    :root{
+      --accent: #f8a1d1;
+      --accent-2: #c8a2c8;
+      --bg: #fff;
+      --text: #333;
+    }
+
+    /* Base */
+    *{ box-sizing: border-box; }
     body {
       margin: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #fff;
-      color: #333;
+      background-color: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
       overflow-x: hidden;
     }
 
-    /* Hero Section */
+    /* HERO */
     .hero {
       position: relative;
       height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      color: #fff;
-      overflow: hidden;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      color:#fff;
+      overflow:hidden;
     }
 
-    
-    .hero-content {
-  opacity: 0;
-  transform: translateY(30px);
-  animation: fadeUp 1s ease-out forwards;
-}
-
-@keyframes fadeUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-.modal-content {
-  transform: scale(0.8);
-  opacity: 0;
-  animation: popIn 0.3s ease forwards;
-}
-
-@keyframes popIn {
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-.hero img {
-  animation: float 4s ease-in-out infinite;
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
-}
-    /* Blurred background */
-    .hero::before {
-      content: "";
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: url('images/download.jpg') no-repeat center center/cover;
+    .hero::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:url('images/download.jpg') no-repeat center/cover;
       filter: blur(2px) brightness(0.6);
-      z-index: 0;
+      z-index:0;
     }
 
-    .hero-content {
-      position: relative;
-      z-index: 1;
-      max-width: 600px;
-      padding: 20px;
-      margin-top: -20%;
+    .hero-content{
+      position:relative;
+      z-index:1;
+      max-width:600px;
+      padding:20px;
+      margin-top:-20%;
+      opacity:0;
+      transform:translateY(30px);
+      animation:fadeUp 1s ease-out forwards;
     }
+    @keyframes fadeUp { to { opacity:1; transform:translateY(0);} }
 
-    .hero h1 {
-      font-size: 2.5rem;
-      margin-bottom: 20px;
+    .hero h1{
+      font-size:2.5rem;
+      margin:0 0 16px;
       color:#e0e0e0;
-       text-shadow: 1px 1px 3px rgba(0,0,0,0.4); /* makes it readable over background */
+      text-shadow:1px 1px 3px rgba(0,0,0,0.4);
+      letter-spacing:0.2px;
     }
 
-    .hero img {
-      width: 180px;
-      height: 180px;
-      object-fit: cover;
-      margin-bottom: 20px;
-      border: 4px solid white; /* inner outline */
-  box-shadow: 0 0 0 6px #c8a2c8; /* outer pastel outline */
-  border-radius: 12px;
+    .hero img{
+      width:180px;height:180px;object-fit:cover;margin:14px 0;
+      border:4px solid #fff;
+      box-shadow:0 0 0 6px var(--accent-2);
+      border-radius:12px;
+      animation:float 4s ease-in-out infinite;
     }
+    @keyframes float { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-8px);} }
 
-    .hero p {
-      font-size: 1.2rem;
-      margin-bottom: 20px;
-       text-shadow: 1px 1px 3px rgba(0,0,0,0.4); /* makes it readable over background */
+    .hero p{ font-size:1.15rem; margin: 0 0 20px; text-shadow:1px 1px 3px rgba(0,0,0,0.4); }
+
+    .hero button{
+      background: linear-gradient(135deg,var(--accent-2),var(--accent));
+      color:white;border:none;padding:10px 18px;border-radius:10px;font-weight:700;
+      box-shadow:0 6px 14px rgba(0,0,0,0.15); cursor:pointer;
+      transition: transform .22s ease, box-shadow .22s ease;
     }
+    .hero button:hover{ transform:translateY(-3px); box-shadow:0 10px 20px rgba(248,161,209,0.4); }
 
-    .hero button {
-  background: linear-gradient(135deg, #c8a2c8, #f8a1d1);
-  color: white;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
-  font-weight: bold;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-  transition: transform 0.2s ease;
-    }
-
-    .hero button:hover {
-      transform: scale(1.05);
-      box-shadow: 0 4px 15px rgba(255, 105, 180, 0.5);
-    }
-
-    /* Modal */
+    /* Modal base (used by greeting and music) */
     .modal {
-      display: none;
-      position: fixed;
-      inset: 0;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      position:fixed;
+      inset:0;
       background: rgba(0,0,0,0.6);
       backdrop-filter: blur(6px);
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
+      opacity:0;
+      pointer-events:none;
+      transition: opacity .28s ease;
+      z-index:1000;
+    }
+    .modal.show{ opacity:1; pointer-events:auto; }
+
+    .modal-content{
+      background:#fff;
+      color:#333;
+      padding:28px;
+      border-radius:12px;
+      text-align:center;
+      max-width:420px;
+      width:88%;
+      position:relative;
+      transform:scale(.85);
+      transition: transform .28s ease;
+    }
+    /* when modal wrapper has show, scale modal content in */
+    .modal.show .modal-content{ transform:scale(1); }
+
+    .close{
+      position:absolute; top:10px; right:14px; font-size:1.4rem; cursor:pointer; color:#aa3a3a;
     }
 
-    .modal-content {
-      background: #fff;
-      color: #333;
-      padding: 30px;
-      border-radius: 12px;
-      text-align: center;
-      max-width: 350px;
-      width: 80%;
-      position: relative;
+    /* Playlist card */
+    .playlist {
+      background:#ffffff;
+      padding:36px 20px;
+      border-radius:12px;
+      max-width:760px;
+      margin: 28px auto 90px;
+      box-shadow:0 6px 28px rgba(0,0,0,0.08);
     }
 
-    .modal-content h2 {
-      margin-bottom: 15px;
+    .playlist-header{
+      display:flex; gap:18px; align-items:center; justify-content:center; flex-direction:column;
+      margin-bottom:18px;
+    }
+    .playlist-header img{ width:120px; height:120px; border-radius:10px; object-fit:cover; }
+    .playlist-header h2{ margin:0; color:var(--accent-2); font-size:1.5rem; }
+    .playlist-header p{ margin:0; color:#666; max-width:480px; text-align:center; }
+
+    .song-list{ list-style:none;margin:14px 0 0;padding:0; display:flex; flex-direction:column; gap:8px; }
+    .song-list li{
+      display:flex; gap:14px; align-items:center; padding:12px; border-radius:10px; cursor:pointer;
+      transition: background .18s ease, transform .12s ease;
+    }
+    .song-list li:hover{ background: rgba(200,162,200,0.12); transform: translateX(4px); }
+    .song-list img{ width:60px; height:60px; border-radius:8px; object-fit:cover; box-shadow:0 4px 10px rgba(0,0,0,0.06); }
+    .song-list h4{ margin:0; font-size:15px; color:#222; }
+    .song-list p{ margin:0; font-size:13px; color:#777; }
+
+    /* MUSIC PLAYER (player inside modal) */
+    .player { position:relative; padding:28px; border-radius:14px; text-align:center; max-width:480px; width:86%; color:#fff; overflow:hidden; z-index:1; }
+    /* blurred background layer (we'll fade this in/out via JS) */
+    .player-bg {
+      position:absolute; inset:0; background-size:cover; background-position:center; transform:scale(1.2);
+      filter: blur(20px) saturate(.9);
+      z-index:-2;
+      opacity:0; transition:opacity .36s ease;
+    }
+    /* dark overlay for readability */
+    .player-overlay {
+      position:absolute; inset:0; background: rgba(0,0,0,0.52); z-index:-1;
     }
 
-    .close {
-      position: absolute;
-      top: 10px;
-      right: 15px;
-      font-size: 1.5rem;
-      cursor: pointer;
-      color: #666;
+    .player img { width:150px; height:150px; border-radius:12px; margin-bottom:14px; object-fit:cover; box-shadow:0 6px 18px rgba(0,0,0,0.25); }
+    .player h3{ margin:10px 0 6px; color:#fff; }
+    .player p{ margin:0 0 10px; color:#eee; }
+
+    /* custom progress */
+    .progress-wrap { display:flex; gap:10px; align-items:center; margin-top:10px; }
+    .time { font-size:12px; color:rgba(255,255,255,0.9); min-width:36px; text-align:center; }
+    .progress-container { flex:1; height:8px; background: rgba(255,255,255,0.12); border-radius:6px; position:relative; cursor:pointer; overflow:hidden; }
+    .progress { position:absolute; left:0; top:0; height:100%; width:0%; background: linear-gradient(135deg,var(--accent-2),var(--accent)); border-radius:6px; transition:width .12s linear; }
+
+    /* hide default audio */
+    audio{ display:none; }
+
+    /* NOW PLAYING BAR */
+    .now-playing {
+      position: fixed; left:12px; right:12px; bottom:12px;
+      background: #fff; box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      display:none; align-items:center; gap:12px; padding:8px 12px; border-radius:10px; z-index:2000;
     }
+    .now-playing img{ width:48px; height:48px; border-radius:8px; object-fit:cover; }
+    .now-playing-info{ flex:1; min-width:0; }
+    .now-playing h4{ margin:0; font-size:14px; color:#222; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+    .now-playing p{ margin:0; font-size:12px;color:#666; }
+    .now-playing .controls { display:flex; gap:8px; align-items:center; }
+    .now-playing button{ background:none;border:none;font-size:20px;cursor:pointer; }
 
- /* Playlist Section */
-.playlist {
-  background: #ffffff;
-  padding: 40px 20px;
-  border-radius: 12px;
-  max-width: 600px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1); /* softer for light mode */
-}
-
-.playlist-header {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
-  margin-bottom: 30px;
-}
-
-.playlist-header img {
-  border-radius: 8px;
-  width: 120px;
-  height: 120px;
-}
-
-.covering{
-    display: flex;
-    justify-content: center;
-    gap: 5%;
-}
-.playlist-header h2 {
-  color: var(--accent-2); /* keep your accent (lavender/pink) */
-  margin-bottom: 5px;
-  font-size: 1.5rem;
-  text-align: center;
-}
-
-.playlist-header p {
-  color: #666; /* softer dark grey */
-}
-
-.song-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.song-list li {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  padding: 12px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.song-list li:hover {
-  background: rgba(200, 162, 200, 0.15); /* pastel lavender hover */
-}
-
-.song-list img {
-  border-radius: 6px;
-  width: 60px;
-  height: 60px;
-}
-
-.song-list h4 {
-  margin: 0;
-  font-size: 16px;
-  color: #222; /* dark text for readability */
-}
-
-.song-list p {
-  margin: 0;
-  font-size: 14px;
-  color: #777; /* lighter grey */
-}
-
-/* Music Player Modal */
-.player img {
-  width: 150px;
-  height: 150px;
-  border-radius: 12px;
-  margin-bottom: 15px;
-}
-
-.player h3 {
-  margin: 10px 0 5px;
-  color: var(--accent-2);
-}
-
-.player p {
-  margin: 0 0 10px;
-  color: #555;
-}
-
-.player audio {
-  width: 100%;
-  margin: 15px 0;
-}
-
-.player .msg {
-  margin-top: 10px;
-  color: var(--accent);
-  font-weight: bold;
-}
-.gtr{
-    text-align: left;
-}
-
+    /* responsive tweaks */
+    @media (max-width:560px){
+      .hero h1{ font-size:1.8rem; }
+      .player img{ width:120px; height:120px; }
+      .playlist { margin: 18px 12px 100px; }
+      .now-playing img{ width:44px; height:44px; }
+    }
   </style>
 </head>
 <body>
-  <!-- Hero -->
+  <!-- HERO -->
   <section class="hero">
     <div class="hero-content">
       <h1>Happy Birthday, Maryle!</h1>
       <img src="images/back.jpg" alt="Maryle">
-      <p>Happy Birthday, Ms. Maryle! Wishing you a fun and amazing day!</p>
+      <p>Happy Birthday, Ms. Maryle! I hoped you had a fun and amazing day!</p>
       <button onclick="openGreeting()">Open Greeting</button>
     </div>
   </section>
 
-  <!-- Greeting Modal -->
-  <div class="modal" id="greetingModal">
-    <div class="modal-content">
+  <!-- GREETING MODAL -->
+  <div id="greetingModal" class="modal" aria-hidden="true">
+    <div class="modal-content" style="height: 90%; overflow-y: scroll;">
       <span class="close" onclick="closeGreeting()">&times;</span>
       <h2>Birthday Greetings</h2>
-      <p class="gtr">Hi Ms. Maryle, <br><br>
-
-Happy Birthday! I hope your day is filled with happiness, laughter, and everything that makes you feel special. Birthdays only come once a year, so I wish this one brings you lots of good memories to look back on.
-<br><br>
-I know we don’t really know each other (yet), but I just want to be honest I’ve admired you from afar for quite a while now. There is really something in you that makes you standout. It might sound simple, but sometimes even small things like your smile or the way you present yourself can make someone’s day better. For me, that’s true.
-<br><br>
-I don’t want to make this sound too cheesy, so I’ll just leave it at that. I just thought your birthday was the best time to finally say it, even in a small way.
-<br><br>
-Wishing you an amazing year ahead more laughter, more wins, and more reasons to celebrate. Enjoy your special day, you deserve it! 
-<br><br>
-– Mark</p>
+     <p class="gtr" style="text-align:left;">
+  Hi Ms. Maryle,<br><br>
+  Happy Birthday! I hoped your day was filled with happiness, laughter, and everything that made you feel special. Birthdays only come once a year, so I wished this one gave you lots of good memories to look back on.
+  <br><br>
+  I know we didn’t really know each other (yet), but I just wanted to be honest, I had admired you from afar for quite a while. There was really something in you that made you stand out. It might sound simple, but sometimes even small things like your smile or the way you presented yourself could make someone’s day better. For me, that was true.
+  <br><br>
+  I didn’t want to make this sound too cheesy, so I just left it at that. I just thought your birthday was the best time to finally say it, even in a small way.
+  <br><br>
+  I wished you an amazing year ahead more laughter, more wins, and more reasons to celebrate. I hoped you enjoyed your special day, you deserved it!<br><br>
+  — Mark
+</p>
     </div>
   </div>
 
-  <!-- Playlist -->
-  <section class="playlist">
+  <!-- PLAYLIST -->
+  <section class="playlist" aria-label="Playlist">
     <div class="playlist-header">
-    <h2>The playlist that feels familiar.</h2>
-      <div class="covering">
-          <img src="songs/cover/cover.png" alt="Playlist Cover">
+      <h2 style="text-align: center;">The playlist that feels familiar.</h2>
+      <div style="display: flex; align-items: center; gap: 5%; text-align: left;">
+        <img src="songs/cover/cover.png" alt="Playlist Cover">
         <p>A mix of songs that somehow remind me of you in the smallest ways.</p>
       </div>
     </div>
 
     <ul class="song-list">
-      <li onclick="openPlayer('Cotton Candy', 'Arthur Nery', 'songs/audio/Arthur Nery - Cotton Candy (Official Audio).mp3', 'songs/cover/arthurnery1.jpg', 'This reminds me of the way you smile, sweet and delicate 😶')">
-        <img src="songs/cover/arthurnery1.jpg" alt="Song One">
-        <div>
-          <h4>Cotton Candy</h4>
-          <p>Arthur Nery</p>
-        </div>
+      <li onclick="openPlayer('Cotton Candy','Arthur Nery','songs/audio/Arthur Nery - Cotton Candy (Official Audio).mp3','songs/cover/arthurnery1.jpg')">
+        <img src="songs/cover/arthurnery1.jpg" alt="">
+        <div><h4>Cotton Candy</h4><p>Arthur Nery</p></div>
       </li>
-      <li onclick="openPlayer('Out Of My League', 'LANY', 'songs/audio/LANY - Out Of My League (Official Lyric Video).mp3', 'songs/cover/lany.jpg', 'The title speaks for itself 🤐')">
-        <img src="songs/cover/lany.jpg" alt="Song Two">
-        <div>
-          <h4>Out Of My League</h4>
-          <p>LANY</p>
-        </div>
+
+      <li onclick="openPlayer('Out Of My League','LANY','songs/audio/LANY - Out Of My League (Official Lyric Video).mp3','songs/cover/lany.jpg')">
+        <img src="songs/cover/lany.jpg" alt="">
+        <div><h4>Out Of My League</h4><p>LANY</p></div>
       </li>
-      <li onclick="openPlayer('Style', 'Taylor Swift', 'songs/audio/Taylor Swift - Style.mp3', 'songs/cover/taylor.jpg', 'For every outfit you wore that left me quiet and a bit stunned. 😶')">
-        <img src="songs/cover/taylor.jpg" alt="Song Three">
-        <div>
-          <h4>Style</h4>
-          <p>Taylor Swift</p>
-        </div>
+
+      <li onclick="openPlayer('Style','Taylor Swift','songs/audio/Taylor Swift - Style.mp3','songs/cover/taylor.jpg')">
+        <img src="songs/cover/taylor.jpg" alt="">
+        <div><h4>Style</h4><p>Taylor Swift</p></div>
       </li>
-      <li onclick="openPlayer('Baliw', 'SUD', 'songs/audio/SUD - Baliw (Official Music Video).mp3', 'songs/cover/baliw.jpg', 'You are a psychology student right? andam mahimong pasyente -- ako ni ha 😔')">
-        <img src="songs/cover/baliw.jpg" alt="Song Three">
-        <div>
-          <h4>Baliw</h4>
-          <p>SUD</p>
-        </div>
+
+      <li onclick="openPlayer('Baliw','SUD','songs/audio/SUD - Baliw (Official Music Video).mp3','songs/cover/baliw.jpg')">
+        <img src="songs/cover/baliw.jpg" alt="">
+        <div><h4>Baliw</h4><p>SUD</p></div>
       </li>
-      <li onclick="openPlayer('Di Nakakasawa', 'Arthur Nery', 'songs/audio/Di Nakakasawa - Arthur Nery feat. Kiyo  II_ The Second Album (Official Audio).mp3', 'songs/cover/arthur.png', '0.49 sec is literaly you 😬')">
-        <img src="songs/cover/arthur.png" alt="Song Three">
-        <div>
-          <h4>Di Nakakasawa</h4>
-          <p>Arthur Nery</p>
-        </div>
+
+      <li onclick="openPlayer('Di Nakakasawa','Arthur Nery','songs/audio/Di Nakakasawa - Arthur Nery feat. Kiyo  II_ The Second Album (Official Audio).mp3','songs/cover/arthur.png')">
+        <img src="songs/cover/arthur.png" alt="">
+        <div><h4>Di Nakakasawa</h4><p>Arthur Nery</p></div>
       </li>
-       <li onclick="openPlayer('Aphrodite', 'The Ridleys', 'songs/audio/Aphrodite.mp3', 'songs/cover/ridleys.png', 'A song for such goddess like beauty 😶‍🌫️')">
-        <img src="songs/cover/ridleys.png" alt="Song Three">
-        <div>
-          <h4>Aphrodite</h4>
-          <p>The Ridleys</p>
-        </div>
+
+      <li onclick="openPlayer('Aphrodite','The Ridleys','songs/audio/Aphrodite.mp3','songs/cover/ridleys.png')">
+        <img src="songs/cover/ridleys.png" alt="">
+        <div><h4>Aphrodite</h4><p>The Ridleys</p></div>
       </li>
-      <li onclick="openPlayer('Hold Your Breath', 'Chase Atlantic', 'songs/audio/Hold Your Breath.mp3', 'songs/cover/chase.png', 'Aside from chase atlantic being my fave artist your style fits the beat of this one 😳')">
-        <img src="songs/cover/chase.png" alt="Song Three">
-        <div>
-          <h4>Hold Your Breath</h4>
-          <p>Chase Atlantic</p>
-        </div>
+
+      <li onclick="openPlayer('Hold Your Breath','Chase Atlantic','songs/audio/Hold Your Breath.mp3','songs/cover/chase.png')">
+        <img src="songs/cover/chase.png" alt="">
+        <div><h4>Hold Your Breath</h4><p>Chase Atlantic</p></div>
       </li>
-         <li onclick="openPlayer('I Like U', 'NIKI', 'songs/audio/NIKI - I LIKE U (Official Music Video).mp3', 'songs/cover/NIKI.png', 'Ofcouse I gotta finish the list with this one right? 🫢')">
-        <img src="songs/cover/NIKI.png" alt="Song Three">
-        <div>
-          <h4>I Like U</h4>
-          <p>NIKI</p>
-        </div>
+
+      <li onclick="openPlayer('I Like U','NIKI','songs/audio/NIKI - I LIKE U (Official Music Video).mp3','songs/cover/NIKI.png')">
+        <img src="songs/cover/NIKI.png" alt="">
+        <div><h4>I Like U</h4><p>NIKI</p></div>
       </li>
     </ul>
   </section>
 
-  <!-- Music Player Modal -->
-  <div id="musicModal" class="modal">
-    <div class="modal-content player">
+  <!-- MUSIC PLAYER MODAL -->
+  <div id="musicModal" class="modal" aria-hidden="true">
+    <div class="modal-content player" role="dialog" aria-modal="true">
+      <div class="player-bg" aria-hidden="true"></div>
+      <div class="player-overlay" aria-hidden="true"></div>
+
       <span class="close" onclick="closePlayer()">&times;</span>
-      <img id="player-img" src="" alt="Album Art">
+      <img id="player-img" src="" alt="Album art">
       <h3 id="player-title"></h3>
       <p id="player-artist"></p>
-      <audio id="audio-player" controls></audio>
+
+      <!-- hidden native audio element -->
+      <audio id="audio-player" preload="metadata"></audio>
+
+      <!-- custom progress and times -->
+      <div class="progress-wrap">
+        <div class="time" id="curtime">0:00</div>
+        <div class="progress-container" id="progressContainer" aria-label="Seek bar" role="slider" tabindex="0">
+          <div class="progress" id="progressBar"></div>
+        </div>
+        <div class="time" id="durtime">0:00</div>
+      </div>
     </div>
   </div>
-  <!-- claw -->
+
+  <!-- NOW PLAYING BAR -->
+  <div id="nowPlayingBar" class="now-playing" aria-hidden="true">
+    <img id="np-img" src="" alt="cover">
+    <div class="now-playing-info">
+      <h4 id="np-title">Not playing</h4>
+      <p id="np-artist">&nbsp;</p>
+    </div>
+    <div class="controls">
+      <button id="np-toggle" title="Play / Pause">⏯</button>
+    </div>
+  </div>
+
   <script>
-    // Greeting Modal
-    function openGreeting() {
-      document.getElementById("greetingModal").style.display = "flex";
-    }
-    function closeGreeting() {
-      document.getElementById("greetingModal").style.display = "none";
+    // Elements
+    const greetingModal = document.getElementById('greetingModal');
+    const musicModal = document.getElementById('musicModal');
+    const player = document.querySelector('.player');
+    const playerBg = document.querySelector('.player .player-bg');
+    const playerImg = document.getElementById('player-img');
+    const playerTitle = document.getElementById('player-title');
+    const playerArtist = document.getElementById('player-artist');
+    const audio = document.getElementById('audio-player');
+
+    const progressContainer = document.getElementById('progressContainer');
+    const progressBar = document.getElementById('progressBar');
+    const curtimeEl = document.getElementById('curtime');
+    const durtimeEl = document.getElementById('durtime');
+
+    const nowPlayingBar = document.getElementById('nowPlayingBar');
+    const npImg = document.getElementById('np-img');
+    const npTitle = document.getElementById('np-title');
+    const npArtist = document.getElementById('np-artist');
+    const npToggle = document.getElementById('np-toggle');
+
+    // UTILS
+    function formatTime(t){
+      if (!t || isNaN(t)) return '0:00';
+      const sec = Math.floor(t % 60).toString().padStart(2,'0');
+      const min = Math.floor(t / 60);
+      return `${min}:${sec}`;
     }
 
-    function openPlayer(title, artist, src, img) {
-      document.getElementById("musicModal").style.display = "flex";
-      document.getElementById("player-title").textContent = title;
-      document.getElementById("player-artist").textContent = artist;
-      document.getElementById("player-img").src = img;
+    // GREETING modal functions (use class show for animation)
+    function openGreeting(){
+      greetingModal.classList.add('show');
+      greetingModal.setAttribute('aria-hidden','false');
+      // optional auto-close after 20s (comment/uncomment as you like)
+      // setTimeout(closeGreeting, 20000);
+    }
+    function closeGreeting(){
+      greetingModal.classList.remove('show');
+      greetingModal.setAttribute('aria-hidden','true');
+    }
 
-      let audio = document.getElementById("audio-player");
+    // PLAY / PLAYER functions
+    // fade the background: if playerBg already set, fade out then change image then fade in
+    function setPlayerBackground(imgSrc){
+      // if nothing set yet, set and fade in
+      if(!playerBg.style.backgroundImage){
+        playerBg.style.backgroundImage = `url('${imgSrc}')`;
+        // ensure start from 0 then fade to 1
+        playerBg.style.opacity = 0;
+        requestAnimationFrame(()=> playerBg.style.opacity = 1);
+      } else {
+        // crossfade: fade out, swap, fade in
+        playerBg.style.opacity = 0;
+        setTimeout(()=>{
+          playerBg.style.backgroundImage = `url('${imgSrc}')`;
+          playerBg.style.opacity = 1;
+        }, 260); // slightly less than transition for smoothness
+      }
+    }
+
+    function openPlayer(title, artist, src, img){
+      // show modal (fade/scale)
+      musicModal.classList.add('show');
+      musicModal.setAttribute('aria-hidden','false');
+
+      // update player display
+      playerTitle.textContent = title;
+      playerArtist.textContent = artist;
+      playerImg.src = img;
+
+      // set blurred background with fade
+      setPlayerBackground(img);
+
+      // set audio and play
+      const isSameSrc = audio.src && audio.src.includes(src);
       audio.src = src;
-      audio.play();
+      audio.play().catch(()=>{/* play might be blocked until user interacts */});
+
+      // show/update now playing bar
+      npImg.src = img;
+      npTitle.textContent = title;
+      npArtist.textContent = artist;
+      nowPlayingBar.style.display = 'flex';
+      nowPlayingBar.setAttribute('aria-hidden','false');
+
+      // update toggle icon
+      updateToggleIcon();
     }
 
-    function closePlayer() {
-      document.getElementById("musicModal").style.display = "none";
-      let audio = document.getElementById("audio-player");
-      audio.pause();
-      audio.currentTime = 0;
+    // closing player only hides modal; playback continues and mini bar remains visible
+    function closePlayer(){
+      musicModal.classList.remove('show');
+      musicModal.setAttribute('aria-hidden','true');
     }
+
+    // custom progress updates
+    audio.addEventListener('loadedmetadata', () => {
+      durtimeEl.textContent = formatTime(audio.duration);
+    });
+
+    audio.addEventListener('timeupdate', () => {
+      const d = audio.duration || 0;
+      const pct = d ? (audio.currentTime / d) * 100 : 0;
+      progressBar.style.width = pct + '%';
+      curtimeEl.textContent = formatTime(audio.currentTime);
+      durtimeEl.textContent = formatTime(d);
+      updateToggleIcon();
+    });
+
+    // Seek when user clicks on progress container
+    progressContainer.addEventListener('click', function(e){
+      if(!audio.duration) return;
+      const rect = this.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const pct = clickX / rect.width;
+      audio.currentTime = pct * audio.duration;
+    });
+
+    // keyboard seek with left/right and space to toggle when focus is on slider
+    progressContainer.addEventListener('keydown', function(e){
+      if(!audio.duration) return;
+      if(e.key === 'ArrowLeft'){ audio.currentTime = Math.max(0, audio.currentTime - 5); }
+      if(e.key === 'ArrowRight'){ audio.currentTime = Math.min(audio.duration, audio.currentTime + 5); }
+      if(e.key === ' ' || e.key === 'Spacebar'){ e.preventDefault(); togglePlay(); }
+    });
+
+    // Now-playing mini bar controls
+    function togglePlay(){
+      if(audio.paused) audio.play();
+      else audio.pause();
+      updateToggleIcon();
+    }
+    npToggle.addEventListener('click', (e)=>{
+      togglePlay();
+      e.stopPropagation();
+    });
+
+    // update icon depending on state
+    function updateToggleIcon(){
+      npToggle.textContent = audio.paused ? '▶' : '⏸';
+    }
+
+    // clicking the mini bar re-opens the modal (so user can control more)
+    nowPlayingBar.addEventListener('click', () => {
+      // open modal again
+      musicModal.classList.add('show');
+      musicModal.setAttribute('aria-hidden','false');
+    });
+
+    // when audio ends, reflect icon and optionally hide mini bar (we keep it visible)
+    audio.addEventListener('ended', () => {
+      updateToggleIcon();
+      // if you prefer to auto-hide the mini bar when song ends, uncomment:
+      // nowPlayingBar.style.display = 'none';
+    });
+
+    // Close modals on Escape key
+    document.addEventListener('keydown', (e) => {
+      if(e.key === 'Escape'){
+        if(musicModal.classList.contains('show')) closePlayer();
+        if(greetingModal.classList.contains('show')) closeGreeting();
+      }
+    });
+
+    // Accessibility: stop audio and hide now playing if user clicks a "stop" area (optional)
+    // You could add a stop button later.
   </script>
 </body>
 </html>
